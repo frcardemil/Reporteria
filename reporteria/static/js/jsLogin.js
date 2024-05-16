@@ -6,9 +6,13 @@ function submitLog(){
     }
 }
 function valLogin(username,password){
-    if (username.length >= 5 && password.length >=6) {
+    console.log(username.value)
+    console.log(password.value)
+    if (username.value.length >= 5 && password.value.length >=6) {
+        console.log('true')
         return true
     } else {
+        console.log('false')
         return false
     }
 }

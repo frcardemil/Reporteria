@@ -35,3 +35,15 @@ def index(request):
         return render(request,urlBase+'index.html')
     else:
         return redirect(to="login")
+    
+def reporte(request):
+    if request.user.is_authenticated:
+        return render(request,urlBase+'reporte.html')
+    else:
+        return redirect(to="login")
+    
+def dashboard(request):
+    if request.user.is_authenticated:
+        return render(request,urlBase+'dashboard.html')
+    else:
+        return redirect(to="login")
