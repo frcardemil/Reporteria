@@ -76,14 +76,15 @@ WSGI_APPLICATION = 'Empresa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres.pbasuswynjfdmrbhulln',
+        'USER': 'postgres.mtnpngqcnrrxldqndcbm',
         'PASSWORD': 'Duocuc2024$',
         'HOST': 'aws-0-us-west-1.pooler.supabase.com',
         'PORT': '5432',
     }
 }
+#user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=5432 dbname=postgres
 
 SUPABASE_URL = os.environ['SUPABASE_URL']
 SUPABASE_KEY = os.environ['SUPABASE_KEY']
