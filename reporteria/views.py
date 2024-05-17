@@ -29,6 +29,10 @@ def valLogin(request):
                 return render(request,urlBase+'login.html')
     else:
         return redirect(to='home')
+    
+def logOutReport(request):
+    logout(request)
+    return redirect(to='home')
 
 def index(request):
     if request.user.is_authenticated:

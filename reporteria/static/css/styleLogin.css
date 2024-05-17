@@ -1,5 +1,13 @@
 .fondoLogin{
-    margin: 2% 25%;
     justify-content: center;
-    background-color: #EEEEEE;
+    transform: translateY(50%);
+}
+.inFormR{
+    background-color: #393E46;
+    padding: 60px 19px;
+    border: 2px solid #EEEEEE;
+}
+
+input{
+    margin: 8px 0px;
 }
