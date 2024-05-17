@@ -4,7 +4,7 @@
 {% block titulo %} Mi Dashboard {% endblock %}
 
 {% block styleStatic %}
-
+<link rel="stylesheet" href="../../static/css/styleDashboard.css">
 {% endblock %}
 
 {% block classBody %}
@@ -16,8 +16,10 @@
 
 
 {% block contenido %}
-    <h1>Bienvenido a mi Mi Dashboard</h1>
-    <p>Este es un ejemplo de un archivo HTML.</p>
+    <h1 class="text-light">Bienvenido a mi Mi Dashboard</h1>
+    <p class="text-light">Este es un ejemplo de un archivo HTML.</p>
+    <canvas class="my-4 w-100 bg-light" id="myChart" width="1000" height="459" style="display: block; box-sizing: border-box; height: 9; width: 16;"></canvas>
+    <script src="../../static/js/jsDashBoard.js"></script>
 {% endblock %}
 
 {% block hideFooter%}
