@@ -16,3 +16,4 @@ User:
 }
 
 Crear myvenv: python -m venv myvenv
+Instalar paquetes: pip install -r requirements.txt

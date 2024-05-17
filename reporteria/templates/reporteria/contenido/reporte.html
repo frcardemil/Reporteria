@@ -4,7 +4,7 @@
 {% block titulo %} Reporte {% endblock %}
 
 {% block styleStatic %}
-
+<link rel="stylesheet" href="../../static/css/styleReporte.css">
 {% endblock %}
 
 {% block classBody %}
@@ -16,6 +16,9 @@
 
 
 {% block contenido %}
-<h1>Bienvenido a mi página web</h1>
-<p>Este es un ejemplo de un archivo HTML.</p>
+<h1 class="text-light">Bienvenido a mi página web</h1>
+<p class="text-light">Este es un ejemplo de un archivo HTML.</p>
+{% endblock %}
+
+{% block hideFooter%}
 {% endblock %}
