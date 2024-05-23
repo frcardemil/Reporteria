@@ -1,7 +1,13 @@
-from django.urls import path
+from django.urls import path,include 
+from rest_framework import routers
 from . import views
 
+router=routers.DefaultRouter()
+router.register(r'reporte',views.ReporteViewSet)
+
+
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('', views.index,name='home'),
     path('login/', views.valLogin,name='login'),
     path('logOut/', views.logOutReport,name='logOutR'),
