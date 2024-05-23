@@ -7,7 +7,7 @@ def agregarReporte():
     ws = wb.active
     ws.title = "MiHoja"
 
-    carpeta = "excel"
+    carpeta = "excel_files"
     nombre = "reporte.xlsx"
     ruta = carpeta+"\\"+nombre
 
