@@ -1,29 +1,36 @@
 document.addEventListener('DOMContentLoaded',function() {
   
   // Datos del gráfico
-  const data = [100, 200, 150, 300, 250];
-  const labels = ['A', 'B', 'C', 'D', 'E'];
+  const datos = [20, 30, 40, 50, 60, 70,100];
+  const labels = ['A', 'B', 'C', 'D', 'E','F','g'];
+  const nameLabel = 'Los cara floja'
 
-  addGrafico('myChart',data,labels);
+  addGrafico('myChart',datos,labels,nameLabel);
 })
-function addGrafico(nameID,listaData,listaNameData){
-  const canvas = document.getElementById(nameID);
-  const ctx = canvas.getContext('2d');
+function addGrafico(nameID,listaData,listaNameData,nombreLabel){
+   // Obtener el contexto del canvas
+   const ctx = document.getElementById(nameID).getContext('2d');
 
-  // Configuración del gráfico
-  const barWidth = 40;
-  const barSpacing = 60;
-  const baseLine = 350;
-
-  // Dibujar las barras
-  listaData.forEach((value, index) => {
-    const x = barSpacing * index + barSpacing / 2;
-    const y = baseLine - value;
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(x, y, barWidth, value);
-
-    // Dibujar las etiquetas
-    ctx.fillStyle = 'black';
-    ctx.fillText(listaNameData[index], x + barWidth / 4, baseLine + 20);
-  });
+   // Crear el gráfico con Chart.js
+   const miGrafico = new Chart(ctx, {
+       type: 'line', // Cambia a 'line' para un gráfico de líneas, etc.
+       data: {
+           labels: listaNameData,
+           datasets: [{
+               label: nombreLabel,
+               data: listaData,
+               backgroundColor: '#32E0C4', // Color de fondo de las barras
+               borderColor: '#32E0C4', // Color del borde de las barras
+               borderWidth: 1
+           }]
+       },
+       options: {
+           responsive: true,
+           scales: {
+               y: {
+                   beginAtZero: true
+               }
+           }
+       }
+   });
 }

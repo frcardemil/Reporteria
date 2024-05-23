@@ -16,8 +16,78 @@
 
 
 {% block contenido %}
-<h1 class="text-light">Bienvenido a mi página web</h1>
-<p class="text-light">Este es un ejemplo de un archivo HTML.</p>
+<div class="container">
+    <h1 style="color: #EEEEEE">Reportes</h1>
+
+    <table class="table">
+        <thead class="table-header">
+            <tr>
+                <th width="50px"></th>
+                <th>ID</th>
+                <th>Fecha Emisi&oacute;n</th>
+                <th>Raz&oacute;n</th>
+                <th>&Aacute;rea</th>
+                <th>Descargar</th>
+            </tr>
+        </thead>
+        <tbody class="table-body">
+            <tr>
+                <td class="file-icon google-drive"></td>
+                <td>01</td>
+                <td>2024-05-17</td>
+                <td>Actualización mensual</td>
+                <td>Ventas</td>
+                <td><a href="http://">.PDF</a> / <a href="http://">.XLSX</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn bg-index-2do" style="font-weight: bold;" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+        Generar Reporte
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Generar Reporte Nuevo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'newReporte' %}" method="post" id="formReportRt">
+                        <div class="mb-3">
+                            <label for="razonRt" class="form-label">Razon</label>
+                            <input type="text" class="form-control" name="razonRt" id="razonRt">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_DatosRt" class="form-label">Margen de datos (fechas)</label>
+                            <input type="text" class="form-control" name="fecha_DatosRt" id="fecha_DatosRt">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_areaRt" class="form-label">Area</label>
+                            <select id="id_areaRt" class="form-select" name="id_areaRt">
+                                {% for area in areas %}
+                                <option value="{{ area.id_area }}">{{ area.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reporteRt" class="form-label">Reporte</label>
+                            <input type="file" class="form-control" name="reporteRt" id="reporteRt">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn bg-index-2do" id="btnSubmit">Generar nuevo Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../static/js/jsReporte.js"></script>
 {% endblock %}
 
 {% block hideFooter%}

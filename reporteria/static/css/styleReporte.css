@@ -1,0 +1,65 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.table {
+  margin-bottom: 0;
+  overflow-x: auto;
+}
+
+.table-header {
+  background-color: #f0f3f9;
+  border-radius: 5px 5px 0 0;
+  padding: 20px;
+}
+
+.table-header th {
+  font-weight: bold;
+}
+
+.table-body {
+  padding: 20px;
+}
+
+.table-body tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.table-body td {
+  vertical-align: middle;
+}
+
+.file-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.file-icon.google-drive {
+  background-color: #4285f4;
+  color: #fff;
+}
+
+.file-icon.pdf {
+  background-color: #f95342;
+  color: #fff;
+}
+
+.file-icon.docx {
+  background-color: #337ab7;
+  color: #fff;
+}
+
+.file-icon.xlsx {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.file-icon.pptx {
+  background-color: #ffc107;
+  color: #fff;
+}

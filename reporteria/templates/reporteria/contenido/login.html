@@ -5,6 +5,7 @@
 
 {% block statics %}
 <link rel="stylesheet" href="../../static/css/styleLogin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="../../static/js/jsLogin.js"></script>
 {% endblock %}
 
@@ -23,7 +24,7 @@ style="display: None;"
     <form onSubmit="return submitLog()" method="POST">
         {% csrf_token %}
         <div class="inFormR rounded-4">
-            <img class="position-absolute top-0 start-50 translate-middle-x" src="../../static/img/logo_reporteria.png" style="left: 25%" alt="" width="72" height="72">
+            <img class="position-absolute top-0 start-50 translate-middle-x" src="../../static/img/logo/logo_reporteria.png" style="left: 25%" alt="" width="72" height="72">
             <h1 class="h3 mb-3 fw-normal text-light" style="padding:0px 20px;">Inicio Sesión Reporteria</h1>
 
             <div class="form-floating">
@@ -33,6 +34,9 @@ style="display: None;"
             <div class="form-floating">
                 <input type="password" name="contrasenaLog" class="form-control" id="floatingPassword" placeholder="">
                 <label for="floatingPassword">Contraseña</label>
+                <span class="toggle-password" onclick="verPassword()">
+                    <i id="eye-icon" class="fa fa-eye"></i>
+                </span>
             </div>
 
             <div class="form-check text-start my-3">

@@ -16,10 +16,14 @@
 
 
 {% block contenido %}
-    <h1 class="text-light">Bienvenido a mi Mi Dashboard</h1>
-    <p class="text-light">Este es un ejemplo de un archivo HTML.</p>
-    <canvas class="my-4 w-100 bg-light" id="myChart" width="1000" height="459" style="display: block; box-sizing: border-box; height: 9; width: 16;"></canvas>
-    <script src="../../static/js/jsDashBoard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="section">
+    <div class="card" style="width: 18rem; padding: 10px;">
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+</div>
+<button class="button">Ver más detalles</button>
+<script src="../../static/js/jsDashBoard.js"></script>
 {% endblock %}
 
 {% block hideFooter%}
