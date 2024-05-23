@@ -1,121 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Report Preview</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+  <title>Visualización de reportes</title>
   <style>
     body {
-      background-color: #f8f9fa;
+      font-family: sans-serif;
+      background-color: #EEEEEE;
     }
 
     .container {
-      margin-top: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .table {
-      margin-bottom: 0;
-      overflow-x: auto;
-    }
-
-    .table-header {
-      background-color: #f0f3f9;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #32E0C4;
+      color: #fff;
       border-radius: 5px 5px 0 0;
-      padding: 20px;
     }
 
-    .table-header th {
-      font-weight: bold;
+    .header h1 {
+      margin: 0;
     }
 
-    .table-body {
-      padding: 20px;
+    .filter-container {
+      display: flex;
+      margin-bottom: 10px;
     }
 
-    .table-body tr {
-      border-bottom: 1px solid #ddd;
-    }
-
-    .table-body td {
-      vertical-align: middle;
-    }
-
-    .file-icon {
-      width: 24px;
-      height: 24px;
+    .filter-container label {
       margin-right: 10px;
     }
 
-    .file-icon.google-drive {
-      background-color: #4285f4;
+    .filter-container select {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #393E46;
       color: #fff;
     }
 
-    .file-icon.pdf {
-      background-color: #f95342;
-      color: #fff;
+    tr:hover {
+      background-color: #f5f5f5;
     }
 
-    .file-icon.docx {
-      background-color: #337ab7;
+    .download-btn {
+      background-color: #222831;
       color: #fff;
-    }
-
-    .file-icon.xlsx {
-      background-color: #28a745;
-      color: #fff;
-    }
-
-    .file-icon.pptx {
-      background-color: #ffc107;
-      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Report Preview</h1>
+    <div class="header">
+      <h1>Visualización de reportes</h1>
+      <div class="filter-container">
+        <label for="grupo-filter">Filtrar por grupo:</label>
+        <select id="grupo-filter">
+          <option value="">Todos</option>
+          <option value="">Ventas</option>
+          <option value="">Post-Venta</option>
+          <option value="">Stock</option>
+          </select>
+      </div>
+    </div>
 
-    <table class="table">
-      <thead class="table-header">
-        <tr>
-          <th width="50px"></th>
-          <th>Name</th>
-          <th>Created</th>
-          <th>Subject</th>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre del reporte</th>
+            <th>Grupo</th>
+            <th>Fecha de subida del reporte</th>
+            <th>Fecha de reporte</th>
+            <th>Descargar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RPT1987</td>
+            <td>Producto X</td>
+            <td>Stock</td>
+            <td>25/07/2024</td>
+            <td>De 25/06/2024 a 20/07/2024</td>
+            <td><button class="btn-descargar">Descargar</button></td>
+          </tr>   
+          <tr>
+            <td>RPT1987</td>
+            <td>Cantidad de Ventas</td>
+            <td>Ventas</td>
+            <td>25/07/2024</td>
+            <td>De 25/06/2024 a 20/07/2024</td>
+            <td><button class="btn-descargar">Descargar</button></td>
+          </tr>
+          <tr>
+            <td>RPT1986</td>
+            <td>Boletas emitidas</td>
+            <td>Post-Venta</td>
+            <td>25/07/2024</td>
+            <td>De 25/06/2024 a 20/07/2024</td>
+            <td><button class="btn-descargar">Descargar</button></td>
         </tr>
-      </thead>
-      <tbody class="table-body">
         <tr>
-          <td class="file-icon google-drive"></td>
-          <td>Quarterly Sales Report.pdf</td>
-          <td>2024-05-17</td>
-          <td>Sales figures for Q1 2024</td>
-        </tr>
-        <tr>
-          <td class="file-icon docx"></td>
-          <td>Marketing Plan.docx</td>
-          <td>2024-05-15</td>
-          <td>Outline of our marketing strategy for the next year</td>
-        </tr>
-        <tr>
-          <td class="file-icon xlsx"></td>
-          <td>Budget.xlsx</td>
-          <td>2024-05-10</td>
-          <td>Detailed breakdown of our expenses for 2024</td>
-        </tr>
-        <tr>
-          <td class="file-icon pptx"></td>
-          <td>Product Presentation.pptx</td>
-          <td>2024-05-08</td>
-          <td>Overview of our new product line</td>
-        </tr>
-      </tbody>
-    </table>
+          <td>RPT1985</td>
+          <td>Productos para envío</td>
+          <td>Despacho</td>
+          <td>25/07/2024</td>
+          <td>De 25/06/2024 a 20/07/2024</td>       
+          <td><button class="btn-descargar">Descargar</button></td>
+          </tbody>
+      </table>
+    </div>
   </div>
 
+  <script>
+    // Funciones JavaScript para manejar el filtrado y descarga de reportes
+  </script>
 </body>
 </html>
