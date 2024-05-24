@@ -34,3 +34,9 @@ body{
     background-color: #1a1f25;
     color:#EEEEEE;
 }
+.moveRight {
+    position: absolute;
+    right: 10px;
+    /* Ajusta la posición del icono a la derecha */
+    cursor: pointer;
+}

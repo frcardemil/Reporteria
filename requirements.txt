@@ -4,3 +4,4 @@ openpyxl
 drf-yasg
 djangorestframework
 setuptools
+pdfkit
