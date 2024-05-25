@@ -1,13 +1,28 @@
-.fondoLogin{
+.fondoLogin {
     justify-content: center;
     transform: translateY(50%);
 }
-.inFormR{
+
+.inFormR {
     background-color: #393E46;
     padding: 60px 19px;
     border: 2px solid #EEEEEE;
 }
 
-input{
+input {
     margin: 8px 0px;
+}
+
+.form-floating {
+    display: flex;
+    align-items: center;
+    /* Alinea los elementos verticalmente */
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    /* Ajusta la posición del icono a la derecha */
+    cursor: pointer;
 }

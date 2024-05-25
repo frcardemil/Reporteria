@@ -4,7 +4,7 @@
 {% block titulo %} Mi Dashboard {% endblock %}
 
 {% block styleStatic %}
-<link rel="stylesheet" href="../../static/css/styleDashboard.css">
+<link rel="stylesheet" href="{% static 'css/styleDashboard.css'%}">
 {% endblock %}
 
 {% block classBody %}
@@ -16,10 +16,24 @@
 
 
 {% block contenido %}
-    <h1 class="text-light">Bienvenido a mi Mi Dashboard</h1>
-    <p class="text-light">Este es un ejemplo de un archivo HTML.</p>
-    <canvas class="my-4 w-100 bg-light" id="myChart" width="1000" height="459" style="display: block; box-sizing: border-box; height: 9; width: 16;"></canvas>
-    <script src="../../static/js/jsDashBoard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="section container" style="margin: 30px auto">
+    <input type="hidden" id="ipt-ids-reportes" value="{{ids_reportes}}">
+    {% for reporte in reportes %}
+    <div class="card cardChart" style="width: 18rem; padding: 10px;">
+        <canvas id="myChart-{{reporte.id}}" width="400" height="400"></canvas>
+        <div class="card-body">
+            <h5 class="card-title">{{ reporte.razon }}</h5>
+            <p class="card-text">Fecha de los datos: {{ reporte.fecha_json }}</p>
+        </div>
+    </div>
+    {% if ids_reportes|last == reporte.id %}
+    <script src="{% static 'js/jsDashBoard.js'%}"></script>
+    {% endif %}
+    {% empty %}
+    <p>No hay reportes.</p>
+    {% endfor %}
+</div>
 {% endblock %}
 
 {% block hideFooter%}

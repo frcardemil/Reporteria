@@ -2,3 +2,41 @@ body{
     background-color: #222831;
     height: 100%;
 }
+.bg-index-1ro{
+    background-color: #EEEEEE;
+    color: #222831;
+}
+.bg-index-1ro:hover{
+    background-color:#dbdada;
+    color: #222831;
+}
+.bg-index-2do{
+    background-color: #32E0C4;
+    color: #222831;
+}
+.bg-index-2do:hover{
+    background-color: #3acab2;
+    color: #222831;
+}
+.bg-index-3ro{
+    background-color: #393E46;
+    color: #EEEEEE;
+}
+.bg-index-3ro:hover{
+    background-color: #31343a;
+    color:#EEEEEE;
+}
+.bg-index-4to{
+    background-color: #222831;
+    color: #EEEEEE;
+}
+.bg-index-4to:hover{
+    background-color: #1a1f25;
+    color:#EEEEEE;
+}
+.moveRight {
+    position: absolute;
+    right: 10px;
+    /* Ajusta la posición del icono a la derecha */
+    cursor: pointer;
+}
