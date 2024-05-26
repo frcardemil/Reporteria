@@ -52,7 +52,7 @@
     <br>
     <!-- Button trigger modal -->
     <button type="button" class="btn bg-index-2do" style="font-weight: bold;" data-bs-toggle="modal"
-        data-bs-target="#newReportModal">
+        data-bs-target="#newReportModal" onclick="buttonDisabled(false, 'btnSubmit')">
         Generar Reporte
     </button>
 
@@ -65,6 +65,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <ul class="bg-danger rounded-2 text-light">
+                        <li id="e-razonRt" style="display: none;">Razon fuera del rango de 1 a 60 letras.</li>
+                        <li id="e-fecha_DatosRt" style="display: none;">Fecha Datos JSON sin rellenar</li>
+                        <li id="e-reporteRt" style="display: none;">Reporte no ha sido seleccionado</li>
+                    </ul>
                     <form action="{% url 'newReporte' %}" method="post" enctype="multipart/form-data" id="formReportRt">
                         {% csrf_token %}
                         <input type="hidden" id="idRt" value="">
@@ -108,6 +113,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <ul class="bg-danger rounded-2 text-light">
+                    <li id="eu-razonRt" style="display: none;">Razon fuera del rango de 1 a 60 letras.</li>
+                    <li id="eu-fecha_DatosRt" style="display: none;">Fecha Datos JSON sin rellenar</li>
+                    <li id="eu-reporteRt" style="display: none;">Reporte no ha sido seleccionado</li>
+                </ul>
                 <form action="{% url 'modificarRt' %}" method="post" enctype="multipart/form-data" id="u-formReportRt">
                     {% csrf_token %}
                     <input type="hidden" name="u-idRt" id="u-idRt" value="">

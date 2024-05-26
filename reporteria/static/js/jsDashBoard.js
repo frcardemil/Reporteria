@@ -1,4 +1,3 @@
-//
 document.addEventListener('DOMContentLoaded', function() {
     let ids_reportes = document.getElementById('ipt-ids-reportes').value
     ids_reportes = JSON.parse(ids_reportes)
@@ -28,14 +27,6 @@ function addGrafico(nameID, id) {
         .catch((error) => {
             console.error('GET Error:', error);
         });
-
-    // Ejemplo de solicitud POST
-    const postData = {
-        nombre: "John",
-        edad: 30
-    };
-
-    
 }
 function editarGrafico(nameID,listaData, listaNameData, nombreLabel){
     // Obtener el contexto del canvas

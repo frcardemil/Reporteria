@@ -26,7 +26,13 @@ style="display: None;"
         <div class="inFormR rounded-4">
             <img class="position-absolute top-0 start-50 translate-middle-x" src="../../static/img/logo/logo_reporteria.png" style="left: 25%" alt="" width="72" height="72">
             <h1 class="h3 mb-3 fw-normal text-light" style="padding:0px 20px;">Inicio Sesión Reporteria</h1>
-
+            <ul class="bg-danger rounded-2 text-light">
+                <li id="e-username" style="display: none;">Usuario fuera del rango de 5 a 150 letras.</li>
+                <li id="e-password" style="display: none;">Contraseña fuera del rango de 6 a 150 letras.</li>
+                {% if e_login %}
+                <li id="e-no-existe">El usuario '{{e_login}}' no existe.</li>
+                {% endif %}
+            </ul>
             <div class="form-floating">
                 <input type="text" name="ususarioLog" class="form-control" id="floatingInput" placeholder="">
                 <label for="floatingInput">Usuario</label>
@@ -37,8 +43,8 @@ style="display: None;"
                 <span class="toggle-password" onclick="verPassword()">
                     <i id="eye-icon" class="fa fa-eye"></i>
                 </span>
-            </div>
-            <button class="btn btn-primary w-100 py-2" type="submit">Iniciar Sesión</button>
+            </div><br>
+            <button class="btn btn-primary w-100 py-2" id="btnSubmit" type="submit">Iniciar Sesión</button>
         </div>
     </form>
 {% endblock %}

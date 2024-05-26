@@ -17,10 +17,10 @@
 
 {% block contenido %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<div class="section container" style="margin: 30px auto">
+<div class="container row" style="margin: 30px auto;">
     <input type="hidden" id="ipt-ids-reportes" value="{{ids_reportes}}">
     {% for reporte in reportes %}
-    <div class="card cardChart" style="width: 18rem; padding: 10px;">
+    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
         <canvas id="myChart-{{reporte.id}}" width="400" height="400"></canvas>
         <div class="card-body">
             <h5 class="card-title">{{ reporte.razon }}</h5>
