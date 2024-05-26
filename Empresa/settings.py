@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'Empresa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'reporteria',
+        'USER': 'reporteria123',
+        'PASSWORD': 'reporteria123',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
