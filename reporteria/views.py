@@ -24,7 +24,10 @@ def valLogin(request):
                 return redirect(to='home')
             else:
                 print('Usuario no pertenece a reporteria')
-                return render(request,urlBase+'login.html')
+                context={
+                    'e_login':usuario
+                }
+                return render(request,urlBase+'login.html',context)
     else:
         return redirect(to='home')
     
