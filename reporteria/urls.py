@@ -13,4 +13,5 @@ urlpatterns = [
     path('logOut/', views.logOutReport,name='logOutR'),
     path('reporte/', views.reporte,name='reporte'),
     path('dashboard/', views.dashboard,name='dashboard'),
+    path('api/reportes/crear/', views.ReporteViewSet.as_view({'post': 'create'}), name='crear_reporte'),
 ]

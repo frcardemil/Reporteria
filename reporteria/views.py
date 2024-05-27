@@ -1,19 +1,41 @@
+from os import stat
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout,get_user_model
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from .serializer import ReporteSerializer
 from .models import Reporte
-
-# Create your views here.
+import requests
+from copy import deepcopy
+from django.http import QueryDict
+from datetime import datetime
 
 urlBase="reporteria/contenido/"
-
 
 class ReporteViewSet(viewsets.ModelViewSet):
     queryset = Reporte.objects.all()
     serializer_class = ReporteSerializer
 
+    def create(self, request, *args, **kwargs):
+        despacho_url = 'http://44.205.221.190:8000/despachos/'
+        response = requests.get(despacho_url)
+        body= request.data.copy()
+        if response.status_code == 200:
+            data = response.json()
+            fecha_despacho = None
+            for despacho in data['results']:
+                fecha_despacho = despacho.get('fecha_despacho')
+                if fecha_despacho:
+                    break
+            
+            if fecha_despacho:
+                body['fecha_despacho'] = datetime.strptime(fecha_despacho, '%Y-%m-%d').date()
+                
+
+        querydict=QueryDict('data',mutable=True)
+        querydict.data=body
+        print(querydict.data)
+        return super().create(querydict, *args, **kwargs)
 
 
 
