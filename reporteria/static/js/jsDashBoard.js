@@ -1,29 +1,56 @@
-document.addEventListener('DOMContentLoaded',function() {
-  
-  // Datos del gráfico
-  const data = [100, 200, 150, 300, 250];
-  const labels = ['A', 'B', 'C', 'D', 'E'];
+document.addEventListener('DOMContentLoaded', function() {
+    let ids_reportes = document.getElementById('ipt-ids-reportes').value
+    ids_reportes = JSON.parse(ids_reportes)
+    for (let id_reporte of ids_reportes) {
+        console.log(id_reporte)
+        addGrafico("myChart-"+id_reporte, id_reporte);
+    }
+});
 
-  addGrafico('myChart',data,labels);
-})
-function addGrafico(nameID,listaData,listaNameData){
-  const canvas = document.getElementById(nameID);
-  const ctx = canvas.getContext('2d');
-
-  // Configuración del gráfico
-  const barWidth = 40;
-  const barSpacing = 60;
-  const baseLine = 350;
-
-  // Dibujar las barras
-  listaData.forEach((value, index) => {
-    const x = barSpacing * index + barSpacing / 2;
-    const y = baseLine - value;
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(x, y, barWidth, value);
-
-    // Dibujar las etiquetas
-    ctx.fillStyle = 'black';
-    ctx.fillText(listaNameData[index], x + barWidth / 4, baseLine + 20);
-  });
+function addGrafico(nameID, id) {
+    fetch('/reporteria/excelList/'+id+'/')
+        .then(response => response.json())
+        .then(data => {
+            let nombreLabel = data[0][0] +' / ' + data[0][1]
+            let listaNameData = []
+            let listaData = []
+            for (let i = 1; i < data.length; i++) {
+                const element = data[i];
+                listaNameData.push(element[0])
+                listaData.push(element[1])
+            }
+            console.log(nombreLabel)
+            console.log(listaNameData)
+            console.log(listaData)
+            editarGrafico(nameID,listaData, listaNameData, nombreLabel)
+        })
+        .catch((error) => {
+            console.error('GET Error:', error);
+        });
+}
+function editarGrafico(nameID,listaData, listaNameData, nombreLabel){
+    // Obtener el contexto del canvas
+    const ctx = document.getElementById(nameID).getContext('2d');
+    // Crear el gráfico con Chart.js
+    const miGrafico = new Chart(ctx, {
+        type: 'line', // Cambia a 'line' para un gráfico de líneas, etc.
+        data: {
+            labels: listaNameData,
+            datasets: [{
+                label: nombreLabel,
+                data: listaData,
+                backgroundColor: '#32E0C4', // Color de fondo de las barras
+                borderColor: '#32E0C4', // Color del borde de las barras
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }

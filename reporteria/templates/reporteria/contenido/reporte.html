@@ -4,7 +4,7 @@
 {% block titulo %} Reporte {% endblock %}
 
 {% block styleStatic %}
-<link rel="stylesheet" href="../../static/css/styleReporte.css">
+<link rel="stylesheet" href="{% static 'css/styleReporte.css'%}">
 {% endblock %}
 
 {% block classBody %}
@@ -16,8 +16,143 @@
 
 
 {% block contenido %}
-<h1 class="text-light">Bienvenido a mi página web</h1>
-<p class="text-light">Este es un ejemplo de un archivo HTML.</p>
+<div class="container">
+    <br>
+    <h1 style="color: #EEEEEE;">Reportes</h1>
+    <br>
+    <table class="table">
+        <thead class="table-header" style="border: 1px solid #EEEEEE;">
+            <tr class="table-dark">
+                <th>ID</th>
+                <th>Raz&oacute;n</th>
+                <th>&Aacute;rea</th>
+                <th>Fecha Emisi&oacute;n</th>
+                <th>Fecha de reporte</th>
+                <th>Modificar</th>
+                <th>Eliminar</th>
+                <th>Descargar</th>
+            </tr>
+        </thead>
+        {% for reporte in reportes %}
+        <tbody class="table-body" style="border: 1px solid #222831;">
+            <tr>
+                <td id="idRt-{{ reporte.id}}">{{ reporte.id}}</td>
+                <td id="razonRt-{{ reporte.id}}">{{ reporte.razon}}</td>
+                <td>{{ reporte.id_area.nombre}}</td>
+                <td id="id_areaRt-{{reporte.id}}" style="display:none;">{{ reporte.id_area.id_area}}</td>
+                <td>{{ reporte.fecha_Emision}}</td>
+                <td id="fecha_DatosRt-{{ reporte.id}}">{{ reporte.fecha_json}}</td>
+                <td><a type="button" class="btn bg-index-2do" onclick="modificar({{reporte.id}})" data-bs-target="#updateReportM" data-bs-toggle="modal">Modificar</a></td>
+                <td><a type="button" class="btn btn-danger" href="{% url 'eliminarRt' reporte.id %}">Eliminar</a></td>
+                <td id="reporteRt-{{reporte.id}}"><a href="/media/{{reporte.reporte}}">.PDF</a> / <a href="/media/{{reporte.reporte}}">.XLSX</a></td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <br>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn bg-index-2do" style="font-weight: bold;" data-bs-toggle="modal"
+        data-bs-target="#newReportModal" onclick="buttonDisabled(false, 'btnSubmit')">
+        Generar Reporte
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newReportModal" tabindex="-1" aria-labelledby="newReportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="newReportModalLabel">Generar Reporte Nuevo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="bg-danger rounded-2 text-light">
+                        <li id="e-razonRt" style="display: none;">Razon fuera del rango de 1 a 60 letras.</li>
+                        <li id="e-fecha_DatosRt" style="display: none;">Fecha Datos JSON sin rellenar</li>
+                        <li id="e-reporteRt" style="display: none;">Reporte no ha sido seleccionado</li>
+                    </ul>
+                    <form action="{% url 'newReporte' %}" method="post" enctype="multipart/form-data" id="formReportRt">
+                        {% csrf_token %}
+                        <input type="hidden" id="idRt" value="">
+                        <div class="mb-3">
+                            <label for="razonRt" class="form-label">Razon</label>
+                            <input type="text" class="form-control" name="razonRt" id="razonRt">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_DatosRt" class="form-label">Fecha Datos JSON</label>
+                            <input type="date" class="form-control" name="fecha_DatosRt" id="fecha_DatosRt">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_areaRt" class="form-label">Area</label>
+                            <select id="id_areaRt" class="form-select" name="id_areaRt">
+                                {% for area in areas %}
+                                <option value="{{ area.id_area }}">{{ area.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reporteRt" class="form-label">Reporte</label>
+                            <input type="file" class="form-control" name="reporteRt" id="reporteRt">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn bg-index-4to" href="{% url 'newReporte' %}">Abrir excel</a>
+                    <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal" onclick="limpiarForm('formReportRt')">Cancelar</button>
+                    <button type="button" class="btn bg-index-2do" id="btnSubmit">Guardar nuevo Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 2 -->
+<div class="modal fade" id="updateReportM" tabindex="-1" aria-labelledby="updateReportMLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="updateReportMLabel">Generar Reporte Nuevo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="bg-danger rounded-2 text-light">
+                    <li id="eu-razonRt" style="display: none;">Razon fuera del rango de 1 a 60 letras.</li>
+                    <li id="eu-fecha_DatosRt" style="display: none;">Fecha Datos JSON sin rellenar</li>
+                    <li id="eu-reporteRt" style="display: none;">Reporte no ha sido seleccionado</li>
+                </ul>
+                <form action="{% url 'modificarRt' %}" method="post" enctype="multipart/form-data" id="u-formReportRt">
+                    {% csrf_token %}
+                    <input type="hidden" name="u-idRt" id="u-idRt" value="">
+                    <div class="mb-3">
+                        <label for="u-razonRt" class="form-label">Razon</label>
+                        <input type="text" class="form-control" name="u-razonRt" id="u-razonRt">
+                    </div>
+                    <div class="mb-3">
+                        <label for="u-fecha_DatosRt" class="form-label">Fecha Datos JSON</label>
+                        <input type="date" class="form-control" name="u-fecha_DatosRt" id="u-fecha_DatosRt">
+                    </div>
+                    <div class="mb-3">
+                        <label for="u-id_areaRt" class="form-label">Area</label>
+                        <select id="u-id_areaRt" class="form-select" name="u-id_areaRt">
+                            {% for area in areas %}
+                            <option value="{{ area.id_area }}">{{ area.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u-reporteRt" class="form-label">Reporte</label>
+                        <input type="file" class="form-control" name="u-reporteRt" id="u-reporteRt">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn bg-index-4to" href="{% url 'newReporte' %}">Abrir excel</a>
+                <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal" onclick="limpiarForm('u-formReportRt')">Cancelar</button>
+                <button type="button" class="btn bg-index-2do" id="u-btnSubmit">Actualizar Reporte</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="{% static 'js/jsReporte.js'%}"></script>
 {% endblock %}
 
 {% block hideFooter%}
