@@ -9,7 +9,7 @@ import requests
 from copy import deepcopy
 from django.http import QueryDict
 from datetime import datetime
-
+    
 urlBase="reporteria/contenido/"
 
 class ReporteViewSet(viewsets.ModelViewSet):
@@ -30,8 +30,7 @@ class ReporteViewSet(viewsets.ModelViewSet):
             
             if fecha_despacho:
                 body['fecha_despacho'] = datetime.strptime(fecha_despacho, '%Y-%m-%d').date()
-                
-
+                    
         querydict=QueryDict('data',mutable=True)
         querydict.data=body
         print(querydict.data)

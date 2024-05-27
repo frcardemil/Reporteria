@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'Empresa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'reporteria',
-        'USER': 'reporteria123',
-        'PASSWORD': 'reporteria123',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'fbbUXnJTfVqPnSrptaXNcAiXuDXqyLVJ',
+        'HOST': 'viaduct.proxy.rlwy.net',
+        'PORT': '39856'
     }
 }
 
