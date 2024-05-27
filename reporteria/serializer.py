@@ -6,4 +6,3 @@ class ReporteSerializer(serializers.ModelSerializer):
         model = Reporte
         fields = '__all__'
        
-  
