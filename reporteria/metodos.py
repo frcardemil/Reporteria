@@ -1,6 +1,14 @@
 import openpyxl
 import os
 
+from datetime import timedelta
+
+def ultimo_dia_del_mes(fecha):
+    if fecha.month == 12:
+        return fecha.replace(day=31)
+    siguiente_mes = fecha.replace(month=fecha.month + 1, day=1)
+    return siguiente_mes - timedelta(days=1)
+
 carpeta = "media\\excel_files"
 
 def agregarReporte(pNombre,openRt):
@@ -54,3 +62,5 @@ def excel_a_lista(archivo_excel):
         fila = [cell for cell in row]
         datos.append(fila)
     return datos
+
+

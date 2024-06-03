@@ -1,10 +1,9 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib.auth import authenticate,login,logout
-from datetime import date
-import os
-from .models import Reporte,Area
+from .models import ReporteGeneral
 from . import metodos
+from django.utils import timezone
 
 # Create your views here.
 
@@ -37,9 +36,19 @@ def logOutReport(request):
 
 def reporte(request):
     if request.user.is_authenticated:
+        reportes=[]
+        for reporteTMP in ReporteGeneral.objects.all():
+            reporte={
+                'id':reporteTMP.mes_anno_reporte,
+                'mes_anno_reporte':str(reporteTMP),
+                'porc_entrega_tiempo':round((reporteTMP.entrega_a_tiempo/reporteTMP.entrega_total)*100,2),
+                'porc_new_stock':round((reporteTMP.adquisicion_recibida/reporteTMP.stock_productos)*100,2),
+                'porc_venta_defin':round((reporteTMP.venta_realizada/reporteTMP.venta_pedido)*100,2),
+                'porc_factu_pagada':round((reporteTMP.factura_pagada/reporteTMP.factura_total)*100,2),
+            }
+            reportes.append(reporte)
         context={
-            'reportes':Reporte.objects.all(),
-            'areas': Area.objects.all(),
+            'reportes':reportes,
         }
         return render(request,urlBase+'reporte.html',context)
     else:
@@ -47,7 +56,7 @@ def reporte(request):
 
 def eliminarRt(request,pk):
     if request.user.is_superuser:
-        objReporte=Reporte.objects.get(id=pk)
+        objReporte=ReporteGeneral.objects.get(mes_anno_reporte=pk)
         objReporte.delete()
         return redirect('home')
     else:
@@ -57,55 +66,32 @@ def modificarRt(request):
     if request.method !="POST":
         return redirect(to="home")
     else:
-        id = request.POST["u-idRt"]
-        razon = request.POST["u-razonRt"]
-        id_area = request.POST["u-id_areaRt"]
-        ObjArea=Area.objects.get(id_area=id_area)
-        fecha_json = request.POST["u-fecha_DatosRt"]
-        objReporte = Reporte.objects.get(id=id)
-        if request.FILES.get("u-reporteRt"):
-            reporte = request.FILES.get("u-reporteRt")
-            objReporte.reporte = reporte
-        objReporte.razon = razon
-        objReporte.id_area = ObjArea
-        objReporte.fecha_json = fecha_json
-        
-        objReporte.save()
         return redirect(to="home")
 
 def dashboard(request):
     if request.user.is_authenticated:
-        reportes = Reporte.objects.all()
-        ids_reportes =[]
-        for reporte in reportes:
-            ids_reportes.append(reporte.id)
-        context={
-            'reportes': reportes,
-            'ids_reportes':ids_reportes,
-        }
-        return render(request,urlBase+'dashboard.html',context)
+        fechaActual=timezone.now().date()
+        annoActual=fechaActual.year
+        try:
+            reportes = ReporteGeneral.objects.filter(mes_anno_reporte__year__range=(annoActual-1, annoActual)).order_by('-mes_anno_reporte')
+            print("hola mundo xd")
+            context={
+                'reportes': reportes,
+            }
+            return render(request,urlBase+'dashboard.html',context)
+        except ReporteGeneral.DoesNotExist:
+            print("No se encontró ningún ReporteGeneral para el mes y año especificados.")
+            return render(request,urlBase+'dashboard.html')
     else:
         return redirect(to="login")
-    
+
 def newReport(request):
     if request.method !="POST":
-        metodos.agregarReporte('reporte',1)
         return redirect(to="home")
     else:
-        if request.FILES.get("reporteRt"):
-            razon = request.POST["razonRt"]
-            reporte = request.FILES.get("reporteRt")
-            id_area = request.POST["id_areaRt"]
-            fecha_json = request.POST["fecha_DatosRt"]
-            objArea = Area.objects.get(id_area=id_area)
-            objReporte = Reporte.objects.create(razon=razon,
-                                                reporte=reporte,
-                                                id_area=objArea,
-                                                fecha_json=fecha_json)
-            objReporte.save()
-            return redirect(to="home")
+        return redirect(to="home")
 
 def excel_to_list(request,file_id):
-    reporte = Reporte.objects.get(id=file_id)
+    reporte = ReporteGeneral.objects.get(id=file_id)
     datos = metodos.excel_a_lista(reporte.reporte.path)
     return JsonResponse(datos,safe=False)

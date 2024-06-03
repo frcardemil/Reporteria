@@ -23,12 +23,12 @@
     <table class="table">
         <thead class="table-header" style="border: 1px solid #EEEEEE;">
             <tr class="table-dark">
-                <th>ID</th>
-                <th>Raz&oacute;n</th>
-                <th>&Aacute;rea</th>
-                <th>Fecha Emisi&oacute;n</th>
-                <th>Fecha de reporte</th>
-                <th>Modificar</th>
+                <th>Mes/Año</th>
+                <th>% Entregas a Tiempo</th>
+                <th>% Nuevo Stock</th>
+                <th>% Ventas definitivas</th>
+                <th>% Facturas Pagadas</th>
+                <th>Actualizar</th>
                 <th>Eliminar</th>
                 <th>Descargar</th>
             </tr>
@@ -36,15 +36,14 @@
         {% for reporte in reportes %}
         <tbody class="table-body" style="border: 1px solid #222831;">
             <tr>
-                <td id="idRt-{{ reporte.id}}">{{ reporte.id}}</td>
-                <td id="razonRt-{{ reporte.id}}">{{ reporte.razon}}</td>
-                <td>{{ reporte.id_area.nombre}}</td>
-                <td id="id_areaRt-{{reporte.id}}" style="display:none;">{{ reporte.id_area.id_area}}</td>
-                <td>{{ reporte.fecha_Emision}}</td>
-                <td id="fecha_DatosRt-{{ reporte.id}}">{{ reporte.fecha_json}}</td>
-                <td><a type="button" class="btn bg-index-2do" onclick="modificar({{reporte.id}})" data-bs-target="#updateReportM" data-bs-toggle="modal">Modificar</a></td>
+                <td class="mas_annoRt">{{ reporte.mes_anno_reporte }}</td>
+                <td class="despa">{{ reporte.porc_entrega_tiempo}}%</td>
+                <td class="stock">{{ reporte.porc_new_stock}}%</td>
+                <td class="venta">{{ reporte.porc_venta_defin}}%</td>
+                <td class="contab">{{ reporte.porc_factu_pagada}}%</td>
+                <td><a type="button" class="btn bg-index-2do">Actualizar</a></td>
                 <td><a type="button" class="btn btn-danger" href="{% url 'eliminarRt' reporte.id %}">Eliminar</a></td>
-                <td id="reporteRt-{{reporte.id}}"><a href="/media/{{reporte.reporte}}">.PDF</a> / <a href="/media/{{reporte.reporte}}">.XLSX</a></td>
+                <td class="reporteRt"><a href="/media/{{reporte.reporte}}">.PDF</a> / <a href="/media/{{reporte.reporte}}">.XLSX</a></td>
             </tr>
         </tbody>
         {% endfor %}
@@ -100,53 +99,6 @@
                     <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal" onclick="limpiarForm('formReportRt')">Cancelar</button>
                     <button type="button" class="btn bg-index-2do" id="btnSubmit">Guardar nuevo Reporte</button>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal 2 -->
-<div class="modal fade" id="updateReportM" tabindex="-1" aria-labelledby="updateReportMLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="updateReportMLabel">Generar Reporte Nuevo</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ul class="bg-danger rounded-2 text-light">
-                    <li id="eu-razonRt" style="display: none;">Razon fuera del rango de 1 a 60 letras.</li>
-                    <li id="eu-fecha_DatosRt" style="display: none;">Fecha Datos JSON sin rellenar</li>
-                    <li id="eu-reporteRt" style="display: none;">Reporte no ha sido seleccionado</li>
-                </ul>
-                <form action="{% url 'modificarRt' %}" method="post" enctype="multipart/form-data" id="u-formReportRt">
-                    {% csrf_token %}
-                    <input type="hidden" name="u-idRt" id="u-idRt" value="">
-                    <div class="mb-3">
-                        <label for="u-razonRt" class="form-label">Razon</label>
-                        <input type="text" class="form-control" name="u-razonRt" id="u-razonRt">
-                    </div>
-                    <div class="mb-3">
-                        <label for="u-fecha_DatosRt" class="form-label">Fecha Datos JSON</label>
-                        <input type="date" class="form-control" name="u-fecha_DatosRt" id="u-fecha_DatosRt">
-                    </div>
-                    <div class="mb-3">
-                        <label for="u-id_areaRt" class="form-label">Area</label>
-                        <select id="u-id_areaRt" class="form-select" name="u-id_areaRt">
-                            {% for area in areas %}
-                            <option value="{{ area.id_area }}">{{ area.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="u-reporteRt" class="form-label">Reporte</label>
-                        <input type="file" class="form-control" name="u-reporteRt" id="u-reporteRt">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn bg-index-4to" href="{% url 'newReporte' %}">Abrir excel</a>
-                <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal" onclick="limpiarForm('u-formReportRt')">Cancelar</button>
-                <button type="button" class="btn bg-index-2do" id="u-btnSubmit">Actualizar Reporte</button>
             </div>
         </div>
     </div>

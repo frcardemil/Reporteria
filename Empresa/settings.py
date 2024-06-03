@@ -84,13 +84,16 @@ DATABASES = {
         'USER': 'postgres.mtnpngqcnrrxldqndcbm',
         'PASSWORD': 'Duocuc2024$',
         'HOST': 'aws-0-us-west-1.pooler.supabase.com',
-        'PORT': '5432',
+        'PORT': '6543',
     }
 }
-#user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=5432 dbname=postgres
+#user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
+import os
+from supabase import create_client, Client
 
-SUPABASE_URL = os.environ['SUPABASE_URL']
-SUPABASE_KEY = os.environ['SUPABASE_KEY']
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

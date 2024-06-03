@@ -52,7 +52,7 @@ function condicionSubmit(reporte, razon, fecha, update) {
 
 
 function submitForm(listaCondi, btnID, formID) {
-    btn = document.getElementById(btnID)
+    btn = document.getElementsByClassName(btnID)
     submitTmp = function () {
         ocultarError();
         buttonDisabled(true, btnID)
