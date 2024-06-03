@@ -5,3 +5,4 @@ openpyxl
 drf-yasg
 djangorestframework
 setuptools
+environs

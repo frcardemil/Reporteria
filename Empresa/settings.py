@@ -89,11 +89,16 @@ DATABASES = {
 }
 #user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
 import os
+from environs import Env
 from supabase import create_client, Client
 
-url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+env = Env()
+env.read_env()
+
+supabase_url = env("SUPABASE_URL")
+supabase_key = env("SUPABASE_KEY")
+
+supabase: Client = create_client(supabase_url, supabase_key)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
