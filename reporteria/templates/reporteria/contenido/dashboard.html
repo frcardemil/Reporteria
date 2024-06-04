@@ -18,21 +18,40 @@
 {% block contenido %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="container row" style="margin: 30px auto;">
-    <input type="hidden" id="ipt-ids-reportes" value="{{ids_reportes}}">
-    {% for reporte in reportes %}
+    <h1 style="color: #EEEEEE;">Dashboard</h1>
+    {% if reportes %}
     <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
-        <canvas id="myChart-{{reporte.id}}" width="400" height="400"></canvas>
+        <canvas id="myChart-0" width="400" height="400"></canvas>
         <div class="card-body">
-            <h5 class="card-title">{{ reporte.razon }}</h5>
-            <p class="card-text">Fecha de los datos: {{ reporte.fecha_json }}</p>
+            <h5 class="card-title">Entregas a tiempo</h5>
+            <p class="card-text">hola mundo</p>
         </div>
     </div>
-    {% if ids_reportes|last == reporte.id %}
+    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+        <canvas id="myChart-1" width="400" height="400"></canvas>
+        <div class="card-body">
+            <h5 class="card-title">Nuevo Stock</h5>
+            <p class="card-text">hola mundo</p>
+        </div>
+    </div>
+    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+        <canvas id="myChart-2" width="400" height="400"></canvas>
+        <div class="card-body">
+            <h5 class="card-title">Ventas realizadas</h5>
+            <p class="card-text">hola mundo</p>
+        </div>
+    </div>
+    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+        <canvas id="myChart-3" width="400" height="400"></canvas>
+        <div class="card-body">
+            <h5 class="card-title">Entregas a tiempo</h5>
+            <p class="card-text">hola mundo</p>
+        </div>
+    </div>
     <script src="{% static 'js/jsDashBoard.js'%}"></script>
+    {% else %}
+    <p style="color: #EEEEEE;">No hay reportes.</p>
     {% endif %}
-    {% empty %}
-    <p>No hay reportes.</p>
-    {% endfor %}
 </div>
 {% endblock %}
 

@@ -1,32 +1,59 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let ids_reportes = document.getElementById('ipt-ids-reportes').value
-    ids_reportes = JSON.parse(ids_reportes)
-    for (let id_reporte of ids_reportes) {
-        console.log(id_reporte)
-        addGrafico("myChart-"+id_reporte, id_reporte);
-    }
+    addGrafico("myChart-");
+    console.log('xdxd');
 });
 
-function addGrafico(nameID, id) {
-    fetch('/reporteria/excelList/'+id+'/')
+let meses = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+]
+
+function addGrafico(nameID) {
+    fetch('/reporteria/api/reporte/')
         .then(response => response.json())
         .then(data => {
-            let nombreLabel = data[0][0] +' / ' + data[0][1]
-            let listaNameData = []
-            let listaData = []
-            for (let i = 1; i < data.length; i++) {
-                const element = data[i];
-                listaNameData.push(element[0])
-                listaData.push(element[1])
+            let propiedades=[['entrega_a_tiempo','entrega_total'],['adquisicion_recibida','stock_productos'],
+                            ['venta_realizada','venta_pedido'],['factura_pagada','factura_total']];
+            let nameLabels=[['Entregas a tiempo','Total Entregas'],['Nuevo Stock','Total Stock'],
+                            ['Ventas completadas','Ventas solicitadas'],['Facturas Pagadas','Total Facturas']];
+            let listaData=[];
+            let nombreLabel=[];
+            for (let index = 0; index < data.length; index++) {
+                let listaDataRt = [];
+                const reporte = data[index];
+                console.log(reporte);
+                let fecha = reporte.mes_anno_reporte.split("-");
+                for (let i in propiedades) {
+                    listaDataRt.push(addDatos(reporte,propiedades[i][0],propiedades[i][1],fecha,listaData[i],0));
+                }
+                listaData=listaDataRt
+                console.log(listaData[0]);
+                console.log(index);
             }
-            console.log(nombreLabel)
-            console.log(listaNameData)
-            console.log(listaData)
-            editarGrafico(nameID,listaData, listaNameData, nombreLabel)
+            for (let i = 0; i < propiedades.length; i++) {
+                nombreLabel=[nameLabels[i][0],nameLabels[i][1]];
+                editarGrafico(nameID+i,listaData[i], meses, nombreLabel);
+            }
         })
         .catch((error) => {
             console.error('GET Error:', error);
         });
+}
+
+function addDatos(data,propiedad1,propiedad2,fecha,listaDataRt,index){
+    let listaDataTmp = [[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]];
+    if (listaDataRt) {
+        listaDataTmp=listaDataRt;
+        console.log(listaDataTmp)
+    }
+    for (let i = 0; i < meses.length; i++) {
+        const mes = meses[i];
+        if (meses[fecha[1]-1]==mes){
+            listaDataTmp[0][i]=data[propiedad1]
+            listaDataTmp[1][i]=data[propiedad2]
+        }
+    }
+    return listaDataTmp;
 }
 function editarGrafico(nameID,listaData, listaNameData, nombreLabel){
     // Obtener el contexto del canvas
@@ -37,10 +64,17 @@ function editarGrafico(nameID,listaData, listaNameData, nombreLabel){
         data: {
             labels: listaNameData,
             datasets: [{
-                label: nombreLabel,
-                data: listaData,
+                label: nombreLabel[0],
+                data: listaData[0],
                 backgroundColor: '#32E0C4', // Color de fondo de las barras
                 borderColor: '#32E0C4', // Color del borde de las barras
+                borderWidth: 1
+            },
+            {
+                label: nombreLabel[1],
+                data: listaData[1],
+                backgroundColor: '#222831', // Color de fondo de las barras
+                borderColor: '#222831', // Color del borde de las barras
                 borderWidth: 1
             }]
         },
