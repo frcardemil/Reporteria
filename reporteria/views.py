@@ -3,13 +3,18 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout,get_user_model
 from django.contrib.auth.models import User
 from rest_framework import viewsets
-from .models import *
+from .models import ReporteDespacho 
+from .serializer import ReporteDespachoSerializer
 import requests
+
 from copy import deepcopy
     
 urlBase="reporteria/contenido/"
 
 
+class ReporteDespachoList(viewsets.ModelViewSet):
+    queryset = ReporteDespacho.objects.all()
+    serializer_class = ReporteDespachoSerializer   
 
 
 
