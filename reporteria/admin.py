@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Reporte
+from .models import ReporteDespacho
 # Register your models here.
 
-admin.site.register(Reporte)
+admin.site.register(ReporteDespacho)

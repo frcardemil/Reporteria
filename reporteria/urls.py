@@ -3,7 +3,6 @@ from rest_framework import routers
 from . import views
 
 router=routers.DefaultRouter()
-router.register(r'reporte',views.ReporteViewSet)
 
 
 urlpatterns = [
@@ -13,5 +12,4 @@ urlpatterns = [
     path('logOut/', views.logOutReport,name='logOutR'),
     path('reporte/', views.reporte,name='reporte'),
     path('dashboard/', views.dashboard,name='dashboard'),
-    path('api/reportes/crear/', views.ReporteViewSet.as_view({'post': 'create'}), name='crear_reporte'),
 ]
