@@ -1,10 +1,10 @@
 from django.db import models
-from .metodos import ultimo_dia_del_mes
+from . import metodos  
 
 # Create your models here.
 
 class ReporteGeneral(models.Model):
-    mes_anno_reporte = models.DateField(verbose_name="Mes y Año del Reporte",primary_key=True) #Saber mes y año del reporte (Reporteria)
+    anno_mes_rt = models.IntegerField(verbose_name="Año y Mes del Reporte",primary_key=True) #Saber año y mes del reporte (Reporteria)
     entrega_total = models.IntegerField(default=1, verbose_name="Despachos efectuados") #Conocer cant. despachos hechos (Despacho)
     entrega_a_tiempo = models.IntegerField(default=1, verbose_name="Despachos a tiempo") #Conocer cant. depachos entregados cuando deberian (Despacho)
     stock_productos = models.IntegerField(default=1, verbose_name="Stock de productos") #Conocer stock final (Stock)
@@ -15,18 +15,17 @@ class ReporteGeneral(models.Model):
     factura_total = models.IntegerField(default=1, verbose_name="Facturas hechas en total") #Conocer cant. facturas hechas (Contabilidad)
     factura_pagada = models.IntegerField(default=1, verbose_name="Facturas pagadas") #Conocer cant. de facturas que fueron pagadas. (Contabilidad)
 
+    def formato_anno_mes(self):
+        anno_mes_tmp = str(self.anno_mes_rt)
+        if len(anno_mes_tmp) >= 6:
+            return f"{anno_mes_tmp[-2:]}/{anno_mes_tmp[:4]}"
+        else:
+            return "Formato inválido"
+        
     def save(self, *args, **kwargs):
-        if self.mes_anno_reporte:
-            self.mes_anno_reporte = ultimo_dia_del_mes(self.mes_anno_reporte)
+        metodos.agregarReporte('RT-'+str(self.anno_mes_rt),False,self)
+        print('hola')
         super().save(*args, **kwargs)
 
-    @property
-    def mes(self):
-        return self.mes_anno_reporte.month
-
-    @property
-    def año(self):
-        return self.mes_anno_reporte.year
-
     def __str__(self):
-        return f"{self.mes_anno_reporte.month}/{self.mes_anno_reporte.year}"
+        return self.formato_anno_mes()

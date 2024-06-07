@@ -5,4 +5,5 @@ openpyxl
 drf-yasg
 djangorestframework
 setuptools
+dj-database-url
 environs

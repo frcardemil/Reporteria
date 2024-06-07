@@ -9,7 +9,7 @@ urlpatterns = [
     path('', views.reporte,name='home'),
     path('newReport/', views.newReport,name='newReporte'),
     path('dashboard/', views.dashboard,name='dashboard'),
-    path('excelList/<int:file_id>/', views.excel_to_list, name='excelList'),
     path('eliminarRt/<str:pk>/', views.eliminarRt, name='eliminarRt'),
     path('modificarRt/', views.modificarRt, name='modificarRt'),
+    path('newExcel/<str:open>/<str:pk>/', views.newExcel, name='newExcel'),
 ]

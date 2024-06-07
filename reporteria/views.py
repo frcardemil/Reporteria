@@ -37,10 +37,10 @@ def logOutReport(request):
 def reporte(request):
     if request.user.is_authenticated:
         reportes=[]
-        for reporteTMP in ReporteGeneral.objects.all():
+        for reporteTMP in ReporteGeneral.objects.all().order_by('-anno_mes_rt'):
             reporte={
-                'id':reporteTMP.mes_anno_reporte,
-                'mes_anno_reporte':str(reporteTMP),
+                'id':reporteTMP.anno_mes_rt,
+                'anno_mes_rt':str(reporteTMP),
                 'porc_entrega_tiempo':round((reporteTMP.entrega_a_tiempo/reporteTMP.entrega_total)*100,2),
                 'porc_new_stock':round((reporteTMP.adquisicion_recibida/reporteTMP.stock_productos)*100,2),
                 'porc_venta_defin':round((reporteTMP.venta_realizada/reporteTMP.venta_pedido)*100,2),
@@ -56,7 +56,7 @@ def reporte(request):
 
 def eliminarRt(request,pk):
     if request.user.is_superuser:
-        objReporte=ReporteGeneral.objects.get(mes_anno_reporte=pk)
+        objReporte=ReporteGeneral.objects.get(anno_mes_rt=pk)
         objReporte.delete()
         return redirect('home')
     else:
@@ -71,9 +71,9 @@ def modificarRt(request):
 def dashboard(request):
     if request.user.is_authenticated:
         fechaActual=timezone.now().date()
-        annoActual=fechaActual.year
+        finalAño=fechaActual.year*100+12
         try:
-            reportes = ReporteGeneral.objects.filter(mes_anno_reporte__year__range=(annoActual-1, annoActual)).order_by('-mes_anno_reporte')
+            reportes = ReporteGeneral.objects.filter(anno_mes_rt__range=(finalAño-11, finalAño)).order_by('-anno_mes_rt')
             print("hola mundo xd")
             context={
                 'reportes': reportes,
@@ -86,12 +86,35 @@ def dashboard(request):
         return redirect(to="login")
 
 def newReport(request):
-    if request.method !="POST":
+    if request.method =="POST":
+        anno_mes_rt_Post = request.POST["newRt"]
+        objReporte = ReporteGeneral.objects.create(anno_mes_rt=anno_mes_rt_Post,
+                                                   entrega_total=1,
+                                                   entrega_a_tiempo=1,
+                                                   stock_productos=1,
+                                                   pedido_proveedor=1,
+                                                   adquisicion_recibida=1,
+                                                   venta_pedido=1,
+                                                   venta_realizada=1,
+                                                   factura_total=1,
+                                                   factura_pagada=1)
+        objReporte.save()
         return redirect(to="home")
     else:
         return redirect(to="home")
-
-def excel_to_list(request,file_id):
-    reporte = ReporteGeneral.objects.get(id=file_id)
-    datos = metodos.excel_a_lista(reporte.reporte.path)
-    return JsonResponse(datos,safe=False)
+    
+def newExcel(request,open,pk):
+    id= int(pk)
+    try:
+        reporte = ReporteGeneral.objects.get(anno_mes_rt=id)
+        print(open)
+        if open=='1':
+            metodos.agregarReporte("RT-"+pk,True,reporte)
+        elif open=='2':
+            metodos.agregarReporte("RT-"+pk,False,reporte)
+        else:
+            print('else')
+        return redirect(to="home")
+    except:
+        print('no existe el reporte')
+        return redirect(to="home")

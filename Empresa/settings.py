@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-&s$r0^!pht*nh8ylge%(vceccczl=t@(7%%zz_7j9-**!@s7$f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['34.224.245.239','44.218.227.202','127.0.0.1']
 
 
 # Application definition
@@ -77,18 +77,6 @@ WSGI_APPLICATION = 'Empresa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.mtnpngqcnrrxldqndcbm',
-        'PASSWORD': 'Duocuc2024$',
-        'HOST': 'aws-0-us-west-1.pooler.supabase.com',
-        'PORT': '6543',
-    }
-}
-#user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
-import os
 from environs import Env
 from supabase import create_client, Client
 
@@ -99,6 +87,12 @@ supabase_url = env("SUPABASE_URL")
 supabase_key = env("SUPABASE_KEY")
 
 supabase: Client = create_client(supabase_url, supabase_key)
+
+DATABASES = {
+    'default': env.dj_db_url("DATABASE_URL")
+}
+#user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

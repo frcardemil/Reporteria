@@ -22,7 +22,8 @@ function addGrafico(nameID) {
                 let listaDataRt = [];
                 const reporte = data[index];
                 console.log(reporte);
-                let fecha = reporte.mes_anno_reporte.split("-");
+                let fecha = reporte.anno_mes_rt/100;
+                fecha = fecha.toString().split('.');
                 for (let i in propiedades) {
                     listaDataRt.push(addDatos(reporte,propiedades[i][0],propiedades[i][1],fecha,listaData[i],0));
                 }
