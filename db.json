@@ -1,0 +1,19 @@
+{
+    "results": [
+        {
+            "id": 1,
+            "fecha_despacho": "2019-01-01",
+            "entregado": false
+        },
+        {
+            "id": 2,
+            "fecha_despacho": "2019-01-01",
+            "entregado": false
+        },
+        {
+            "id": 3,
+            "fecha_despacho": "2019-01-01",
+            "entregado": true
+        }
+    ]
+}
