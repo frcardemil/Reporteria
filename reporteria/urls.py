@@ -3,7 +3,7 @@ from rest_framework import routers
 from . import views
 
 router=routers.DefaultRouter()
-router.register(r'reportesdespachos',views.ReporteDespachoList)
+router.register(r'reportesdespachos',views.ReporteDespachoViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('logOut/', views.logOutReport,name='logOutR'),
     path('reporte/', views.reporte,name='reporte'),
     path('dashboard/', views.dashboard,name='dashboard'),
-]
+
+    ]
