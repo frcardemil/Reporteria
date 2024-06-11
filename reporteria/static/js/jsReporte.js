@@ -2,34 +2,18 @@ document.addEventListener('DOMContentLoaded', function () {
     newReport();
 });
 
-function condicionSubmit(listaCondi) {
-    estado = false;
-    cant = 0;
-    if (listaCondi) {
+function condicionSubmit() {
+    let estado = false;
+    let id_reporte = document.getElementById('newRt').value;
+    
+    if (id_reporte) {
         estado=true;
-    }
-    else{
+    } else {
         mostrarError(2);
     }
     return estado;
 }
 
-
-function submitForm(listaCondi, btnID, formID) {
-    btn = document.getElementsByClassName(btnID)
-    submitTmp = function () {
-        buttonDisabled(true, btnID)
-        if (condicionSubmit(listaCondi)) {
-            document.getElementById(formID).submit();
-            console.log('submit')
-        }
-        else {
-            buttonDisabled(false, btnID);
-            console.log('No submit')
-        }
-    }
-    btn.addEventListener('click', submitTmp);
-}
 function newExcel(){
     const url = document.getElementById('url-excel').value;
     let id_Rt = document.getElementById('newRt').value;
@@ -42,20 +26,23 @@ function newExcel(){
     }
 }
 function newReport() {
-    let reporte = document.getElementById('newRt');
-    let listaCondi = [reporte]
-    submitForm(listaCondi, 'btnSubmit', 'formReportRt');
-};
+    let btnID = 'btnSubmit';
+    let formID = 'formReportRt';
+    let btn = document.getElementById(btnID);
 
-function modificar(idReporte) {
-    btn = document.getElementById('u-btnSubmit')
-    buttonDisabled(false, 'u-btnSubmit')
-    try {
-        btn.removeEventListener('click',submitTmp);
-    } catch (error) {
-        console.log('no existe el EventListener')
+    let submitTmp = function () {
+        buttonDisabled(true, btnID);
+        if (condicionSubmit()) {
+            document.getElementById(formID).submit();
+            console.log('submit');
+        }
+        else {
+            buttonDisabled(false, btnID);
+            console.log('No submit');
+        }
     }
-}
+    btn.addEventListener('click', submitTmp);
+};
 
 function limpiarForm(nameForm) {
     let reporteF = document.getElementById(nameForm)

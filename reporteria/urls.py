@@ -10,6 +10,6 @@ urlpatterns = [
     path('newReport/', views.newReport,name='newReporte'),
     path('dashboard/', views.dashboard,name='dashboard'),
     path('eliminarRt/<str:pk>/', views.eliminarRt, name='eliminarRt'),
-    path('modificarRt/', views.modificarRt, name='modificarRt'),
+    path('modificarRt/<str:pk>/', views.modificarRt, name='modificarRt'),
     path('newExcel/<str:open>/<str:pk>/', views.newExcel, name='newExcel'),
 ]

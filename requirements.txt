@@ -7,3 +7,4 @@ djangorestframework
 setuptools
 dj-database-url
 environs
+requests

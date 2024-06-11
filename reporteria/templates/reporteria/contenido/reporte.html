@@ -51,7 +51,7 @@
                 <td class="stock">{{ reporte.porc_new_stock}}%</td>
                 <td class="venta">{{ reporte.porc_venta_defin}}%</td>
                 <td class="contab">{{ reporte.porc_factu_pagada}}%</td>
-                <td><a type="button" class="btn bg-index-2do">Actualizar</a></td>
+                <td><a type="button" class="btn bg-index-2do" href="{% url 'modificarRt' reporte.id %}">Actualizar</a></td>
                 <td><a type="button" class="btn btn-danger" href="{% url 'eliminarRt' reporte.id %}">Eliminar</a></td>
                 <td class="reporteRt"><a href="/media/excel_files/RT-{{reporte.id}}.xlsx">.PDF</a> / <a href="/media/excel_files/RT-{{reporte.id}}.xlsx">.XLSX</a></td>
             </tr>

@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
-from django.http import JsonResponse
 from django.contrib.auth import authenticate,login,logout
+from . import metodos,metApis
 from .models import ReporteGeneral
-from . import metodos
 from django.utils import timezone
 
 # Create your views here.
@@ -62,11 +61,14 @@ def eliminarRt(request,pk):
     else:
         return redirect('login')
     
-def modificarRt(request):
-    if request.method !="POST":
-        return redirect(to="home")
+def modificarRt(request,pk):
+    if request.user.is_superuser:
+        objReporte=ReporteGeneral.objects.get(anno_mes_rt=pk)
+        listaNewDatos = []
+        listaNewDatos =  metApis.hola()
+        return redirect('home')
     else:
-        return redirect(to="home")
+        return redirect('login')
 
 def dashboard(request):
     if request.user.is_authenticated:
@@ -88,7 +90,9 @@ def dashboard(request):
 def newReport(request):
     if request.method =="POST":
         anno_mes_rt_Post = request.POST["newRt"]
-        objReporte = ReporteGeneral.objects.create(anno_mes_rt=anno_mes_rt_Post,
+        anno_mes_rt_Tmp = str(anno_mes_rt_Post).split('-')
+        anno_mes_rt = int(anno_mes_rt_Tmp[0]+anno_mes_rt_Tmp[1])
+        objReporte = ReporteGeneral.objects.create(anno_mes_rt=anno_mes_rt,
                                                    entrega_total=1,
                                                    entrega_a_tiempo=1,
                                                    stock_productos=1,
