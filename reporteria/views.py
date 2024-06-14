@@ -65,7 +65,7 @@ def modificarRt(request,pk):
     if request.user.is_superuser:
         objReporte=ReporteGeneral.objects.get(anno_mes_rt=pk)
         listaNewDatos = []
-        listaNewDatos =  metApis.hola()
+        metApis.requestApis('reporte')
         return redirect('home')
     else:
         return redirect('login')
