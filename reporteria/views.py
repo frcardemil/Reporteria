@@ -33,6 +33,13 @@ def logOutReport(request):
     logout(request)
     return redirect(to='home')
 
+def calcularPorc(a,b):
+    try:
+        porc= round((a/b)*100,2)
+    except:
+        porc = '--'
+    return porc
+
 def reporte(request):
     if request.user.is_authenticated:
         reportes=[]
@@ -40,10 +47,10 @@ def reporte(request):
             reporte={
                 'id':reporteTMP.anno_mes_rt,
                 'anno_mes_rt':str(reporteTMP),
-                'porc_entrega_tiempo':round((reporteTMP.entrega_a_tiempo/reporteTMP.entrega_total)*100,2),
-                'porc_new_stock':round((reporteTMP.adquisicion_recibida/reporteTMP.stock_productos)*100,2),
-                'porc_venta_defin':round((reporteTMP.venta_realizada/reporteTMP.venta_pedido)*100,2),
-                'porc_factu_pagada':round((reporteTMP.factura_pagada/reporteTMP.factura_total)*100,2),
+                'porc_entrega_tiempo':calcularPorc(reporteTMP.entrega_a_tiempo,reporteTMP.entrega_total),
+                'porc_new_stock':calcularPorc(reporteTMP.adquisicion_recibida,reporteTMP.stock_productos),
+                'porc_venta_defin':calcularPorc(reporteTMP.venta_realizada,reporteTMP.venta_pedido),
+                'porc_factu_pagada':calcularPorc(reporteTMP.factura_pagada,reporteTMP.factura_total),
             }
             reportes.append(reporte)
         context={
@@ -63,9 +70,24 @@ def eliminarRt(request,pk):
     
 def modificarRt(request,pk):
     if request.user.is_superuser:
+        anno=int(round(int(pk)/100,0))
+        mesTmp=int(pk)-anno*100
+        if mesTmp < 10:
+            mes='0'+str(mesTmp)
+        else:
+            mes=str(mesTmp)
         objReporte=ReporteGeneral.objects.get(anno_mes_rt=pk)
-        listaNewDatos = []
-        metApis.requestApis('reporte')
+        reporteApi=metApis.obtenerRG(str(anno),mes)
+        objReporte.entrega_total=reporteApi["entrega_total"]
+        objReporte.entrega_a_tiempo=reporteApi["entrega_a_tiempo"]
+        objReporte.stock_productos=reporteApi["stock_productos"]
+        objReporte.pedido_proveedor=reporteApi["pedido_proveedor"]
+        objReporte.adquisicion_recibida=reporteApi["adquisicion_recibida"]
+        objReporte.venta_pedido=reporteApi["venta_pedido"]
+        objReporte.venta_realizada=reporteApi["venta_realizada"]
+        objReporte.factura_total=reporteApi["factura_total"]
+        objReporte.factura_pagada=reporteApi["factura_pagada"]
+        objReporte.save()
         return redirect('home')
     else:
         return redirect('login')
@@ -92,16 +114,19 @@ def newReport(request):
         anno_mes_rt_Post = request.POST["newRt"]
         anno_mes_rt_Tmp = str(anno_mes_rt_Post).split('-')
         anno_mes_rt = int(anno_mes_rt_Tmp[0]+anno_mes_rt_Tmp[1])
+        print(anno_mes_rt_Tmp[0])
+        print(anno_mes_rt_Tmp[1])
+        reporteApi=metApis.obtenerRG(anno_mes_rt_Tmp[0],anno_mes_rt_Tmp[1])
         objReporte = ReporteGeneral.objects.create(anno_mes_rt=anno_mes_rt,
-                                                   entrega_total=1,
-                                                   entrega_a_tiempo=1,
-                                                   stock_productos=1,
-                                                   pedido_proveedor=1,
-                                                   adquisicion_recibida=1,
-                                                   venta_pedido=1,
-                                                   venta_realizada=1,
-                                                   factura_total=1,
-                                                   factura_pagada=1)
+                                                   entrega_total=reporteApi["entrega_total"],
+                                                   entrega_a_tiempo=reporteApi["entrega_a_tiempo"],
+                                                   stock_productos=reporteApi["stock_productos"],
+                                                   pedido_proveedor=reporteApi["pedido_proveedor"],
+                                                   adquisicion_recibida=reporteApi["adquisicion_recibida"],
+                                                   venta_pedido=reporteApi["venta_pedido"],
+                                                   venta_realizada=reporteApi["venta_realizada"],
+                                                   factura_total=reporteApi["factura_total"],
+                                                   factura_pagada=reporteApi["factura_pagada"])
         objReporte.save()
         return redirect(to="home")
     else:

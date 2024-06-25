@@ -25,7 +25,8 @@
         <ul class="bg-danger rounded-2 text-light" style="width: 30%;">
             <h5 style="margin-top: 10px;">Error</h5>
             <li id="e-msgAvance">No hay avances guardados del mes/año "{{sin_avance}}"</li>
-            <button class="btn bg-index-4to" onclick="ocultarError(1)" style="margin: 10px 0px;">Borrar mensaje</button><br>
+            <button class="btn bg-index-4to" onclick="ocultarError(1)" style="margin: 10px 0px;">Borrar
+                mensaje</button><br>
         </ul>
     </div>
     {% endif %}
@@ -51,14 +52,20 @@
                 <td class="stock">{{ reporte.porc_new_stock}}%</td>
                 <td class="venta">{{ reporte.porc_venta_defin}}%</td>
                 <td class="contab">{{ reporte.porc_factu_pagada}}%</td>
-                <td><a type="button" class="btn bg-index-2do" href="{% url 'modificarRt' reporte.id %}">Actualizar</a></td>
+                <td><a type="button" class="btn bg-index-2do" href="{% url 'modificarRt' reporte.id %}">Actualizar</a>
+                </td>
                 <td><a type="button" class="btn btn-danger" href="{% url 'eliminarRt' reporte.id %}">Eliminar</a></td>
-                <td class="reporteRt"><a href="/media/excel_files/RT-{{reporte.id}}.xlsx">.PDF</a> / <a href="/media/excel_files/RT-{{reporte.id}}.xlsx">.XLSX</a></td>
+                <td class="reporteRt"><a href="/media/excel_files/RT-{{reporte.id}}.xlsx">.PDF</a> / <a
+                        href="/media/excel_files/RT-{{reporte.id}}.xlsx">.XLSX</a></td>
             </tr>
         </tbody>
         {% endfor %}
     </table>
     <br>
+{% else %}
+<p style="color: #EEEEEE;">No hay reportes.</p>
+{% endif %}
+
     <!-- Button trigger modal -->
     <button type="button" class="btn bg-index-2do" style="font-weight: bold;" data-bs-toggle="modal"
         data-bs-target="#newReportModal" onclick="buttonDisabled(false, 'btnSubmit')">
@@ -88,18 +95,15 @@
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn bg-index-4to" onclick="newExcel()">Abrir excel</a>
-                    <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal" onclick="limpiarForm('formReportRt')">Cancelar</button>
+                    <button type="button" class="btn bg-index-3ro" data-bs-dismiss="modal"
+                        onclick="limpiarForm('formReportRt')">Cancelar</button>
                     <button type="button" class="btn bg-index-2do" id="btnSubmit">Guardar nuevo Reporte</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 <script src="{% static 'js/jsReporte.js'%}"></script>
-{% else %}
-<p style="color: #EEEEEE;">No hay reportes.</p>
-{% endif %}
 {% endblock %}
 
 {% block hideFooter%}
