@@ -11,12 +11,12 @@ from datetime import datetime
 #despacho  -- 44.205.221.190:8000 / https://leckiam.github.io/prueba-aws/despacho.json 
 #contabilidad -- 54.159.228.5:8000 / https://leckiam.github.io/prueba-aws/contabilidad.json 
 apisHosts = {
-    'adquisiciones' : 'https://leckiam.github.io/prueba-aws/adquisiciones.json',
+    'adquisiciones' : '34.199.103.123:8000',
     'proveedor' : '0.0.0.0:8000',
     'ventas' : 'https://leckiam.github.io/prueba-aws/ventas.json',
-    'despacho' : 'https://leckiam.github.io/prueba-aws/despacho.json',
+    'despacho' : '44.205.221.190:8000',
     'post_venta' : 'https://leckiam.github.io/prueba-aws/post_venta.json',
-    'contabilidad' : 'https://leckiam.github.io/prueba-aws/contabilidad.json',
+    'contabilidad' : '54.159.228.5:8000',
     'stock' : 'https://leckiam.github.io/prueba-aws/stock.json',
     'reporteria' : '44.218.227.202:8000',
     'seguridad' : '0.0.0.0:8000',
@@ -48,9 +48,13 @@ def reporteriaApi():
     return json_data
 
 def adquisicionesApi(anno,mes):
-    #url = 'http://'+apisHosts['adquisiciones']+'/api/v1/productos/'
-    url = apisHosts['adquisiciones']
-    r = requests.get(url)
+    try:
+        url = 'http://'+apisHosts['adquisiciones']+'/api/v1/productos/'
+        r = requests.get(url)
+    except:
+        #url = apisHosts['adquisiciones']
+        url = 'https://leckiam.github.io/prueba-aws/adquisiciones.json'
+        r = requests.get(url)
     if r.status_code == 200:
         json_data = r.json()
         json_filtrado = JSON_filtro(json_data,'adquisiciones',anno,mes)
@@ -83,24 +87,21 @@ def ventasApi(anno,mes):
     return json_filtrado
 
 def despachoApi(anno,mes):
-    #url = 'http://'+apisHosts['despacho']+'/despachos/'
-    url = apisHosts['despacho']
-    r = requests.get(url)
+    try:
+        url = 'http://'+apisHosts['despacho']+'/despachos/'
+        r = requests.get(url)
+    except:
+        #url = apisHosts['despacho']
+        url = 'https://leckiam.github.io/prueba-aws/despacho.json'
+        r = requests.get(url)
     if r.status_code == 200:
         json_data = r.json()
-        print('json_data')
-        print(json_data)
         json_filtrado = JSON_filtro(json_data,'despacho',anno,mes)
-        print('json_filtrado')
-        print(json_filtrado)
         
         despachos_intentos = [
             item for item in json_filtrado 
             if item['intento'] == 1
         ]
-        
-        print('despachos_intentos')
-        print(despachos_intentos)
     else:
         json_filtrado = [1]
         despachos_intentos = [1]
@@ -120,9 +121,13 @@ def post_ventaApi(anno,mes):
     return json_filtrado
 
 def contabilidadApi(anno,mes):
-    #url = 'http://'+apisHosts['contabilidad']+'/api/Facturas/'
-    url = apisHosts['contabilidad']
-    r = requests.get(url)
+    try:
+        url = 'http://'+apisHosts['contabilidad']+'/api/Facturas/'
+        r = requests.get(url)
+    except:
+        #url = apisHosts['contabilidad']
+        url = 'https://leckiam.github.io/prueba-aws/contabilidad.json'
+        r = requests.get(url)
     if r.status_code == 200:
         json_data = r.json()
         json_filtrado = JSON_filtro(json_data,'contabilidad',anno,mes)
