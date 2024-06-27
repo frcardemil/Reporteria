@@ -1,6 +1,4 @@
 Django==4.1.2
-supabase
-psycopg2-binary
 openpyxl
 drf-yasg
 djangorestframework
@@ -8,3 +6,4 @@ setuptools
 dj-database-url
 environs
 requests
+mysqlclient

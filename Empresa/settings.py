@@ -77,19 +77,17 @@ WSGI_APPLICATION = 'Empresa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-from environs import Env
-from supabase import create_client, Client
 
-env = Env()
-env.read_env()
 
-supabase_url = env("SUPABASE_URL")
-supabase_key = env("SUPABASE_KEY")
-
-supabase: Client = create_client(supabase_url, supabase_key)
-
-DATABASES = {
-    'default': env.dj_db_url("DATABASE_URL")
+DATABASES = {   
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'REPORTERIA',
+        'USER': 'admin',    
+        'PASSWORD': 'reporte123',
+        'HOST': 'reportes-sql.c5cee6ukkzxz.us-east-1.rds.amazonaws.com',
+        'PORT': '3306',
+    }
 }
 #user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
 
