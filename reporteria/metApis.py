@@ -1,5 +1,4 @@
 import requests
-from datetime import datetime
 
 #Reporteria
 #44.218.227.202:8000   --Maikel-C
@@ -210,7 +209,7 @@ def seguridadApi(username,password):
     
     url = 'https://qic534o8o0.execute-api.us-east-1.amazonaws.com/validacionUsuarios/'
     
-    r = requests.post(url,data,headers)
+    r = requests.post(url,json=data,headers=headers)
     if r.status_code == 200:
         return True
     else:
