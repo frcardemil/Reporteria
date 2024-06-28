@@ -6,4 +6,4 @@ setuptools
 dj-database-url
 environs
 requests
-mysqlclient
+pymysql
