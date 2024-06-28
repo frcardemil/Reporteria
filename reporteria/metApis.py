@@ -14,7 +14,7 @@ apisHosts = {
     'adquisiciones' : '34.199.103.123:8000',
     'proveedor' : '0.0.0.0:8000',
     'ventas' : 'https://leckiam.github.io/prueba-aws/ventas.json',
-    'despacho' : '3.221.189.4:8000',
+    'despacho' : '44.205.221.190:8000',
     'post_venta' : 'https://leckiam.github.io/prueba-aws/post_venta.json',
     'contabilidad' : '54.159.228.5:8000',
     'stock' : 'https://leckiam.github.io/prueba-aws/stock.json',
@@ -33,10 +33,6 @@ var_fecha_areas = {
 
 def JSON_filtro(json,name,anno,mes):
     name_var_fecha=var_fecha_areas[name]
-    print(name_var_fecha)
-    print(anno)
-    print(mes)
-    print(json)
     json_filtrado = [
         item for item in json 
         if item[name_var_fecha][:4] == str(anno) and 
@@ -54,27 +50,28 @@ def reporteriaApi():
     return json_data
 
 def adquisicionesApi(anno,mes):
-    '''
     try:
-        url = 'http://'+apisHosts['adquisiciones']+'/api/v1/carritos/'
+        url = 'http://'+apisHosts['adquisiciones']+'/api/carrito/'
         r = requests.get(url)
     except:
         #url = apisHosts['adquisiciones']
         url = 'https://leckiam.github.io/prueba-aws/adquisiciones.json'
         r = requests.get(url)
-    '''
-    url = 'https://leckiam.github.io/prueba-aws/adquisiciones.json'
-    r = requests.get(url)
+
     if r.status_code == 200:
         try:
             json_data = r.json().get("results", [])
         except:
             json_data = r.json()
         json_filtrado = JSON_filtro(json_data,'adquisiciones',anno,mes)
+        
+        suma_cantidades = 0
+        for obj in json_filtrado:
+            suma_cantidades += obj.get('cantidad_total', 0)
     else:
         json_filtrado = [1]
         print(f'Error en la petición GET: {r.status_code}')
-    return json_filtrado
+    return [json_filtrado,suma_cantidades]
 
 """
 No poseo ruta exacta de proveedor
@@ -120,15 +117,19 @@ def despachoApi(anno,mes):
             json_data = r.json()
         json_filtrado = JSON_filtro(json_data,'despacho',anno,mes)
         
+        despachos_entreg = [
+            item for item in json_filtrado 
+            if item['entregado']
+        ]
         despachos_intentos = [
             item for item in json_filtrado 
-            if item['intento'] == 1
+            if item['intento'] == 1 and item['entregado']
         ]
     else:
-        json_filtrado = [1]
+        despachos_entreg = [1]
         despachos_intentos = [1]
         print(f'Error en la petición GET: {r.status_code}')
-    return [json_filtrado,despachos_intentos]
+    return [despachos_entreg,despachos_intentos]
 
 def post_ventaApi(anno,mes):
     #url = 'http://'+apisHosts['post_venta']+'/post_venta/'
@@ -192,24 +193,31 @@ def stockApi(anno,mes):
         
     return [json_filtrado,suma_cantidades]
 
-"""
-No poseo ruta exacta de seguridad
 
-def seguridadApi():
-    username = admin.reporteria
-    password = reporteria
-    token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXBvcnRlcmlhIjoidG9rZW5fcmVwb3J0ZXJpYSJ9.jAdpn5jFFOSelg4OqppHtTaGq_NboZq0QsaSMTVEVTA
-    url = 'https://qic534o8o0.execute-api.us-east-1.amazonaws.com/validacionUsuarios/'+token
-    r = requests.get(url)
+def seguridadApi(username,password):
+    #username = admin.reporteria
+    #password = reporteria
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXBvcnRlcmlhIjoidG9rZW5fcmVwb3J0ZXJpYSJ9.jAdpn5jFFOSelg4OqppHtTaGq_NboZq0QsaSMTVEVTA"
+    
+    data = {
+        'username':username,
+        'password':password,
+        'token':token,
+    }
+    headers = {
+        'Content-type':'application/json',
+    }
+    
+    url = 'https://qic534o8o0.execute-api.us-east-1.amazonaws.com/validacionUsuarios/'
+    
+    r = requests.post(url,data,headers)
     if r.status_code == 200:
-        try:
-            json_data = r.json().get("results", [])
-        except:
-            json_data = r.json()
+        return True
     else:
         print(f'Error en la petición GET: {r.status_code}')
-    return json_data
-"""
+        if username=="admin.reporteria" and password=="reporteria":
+            return True
+        return False
 
 
 def obtenerRG(anno,mes):
@@ -218,7 +226,7 @@ def obtenerRG(anno,mes):
         'entrega_a_tiempo':len(despachoApi(anno,mes)[1]),
         'stock_productos':stockApi(anno,mes)[1],
         'pedido_proveedor':1,
-        'adquisicion_recibida':len(adquisicionesApi(anno,mes)),
+        'adquisicion_recibida':adquisicionesApi(anno,mes)[1],
         'venta_pedido':len(post_ventaApi(anno,mes)),
         'venta_realizada':len(ventasApi(anno,mes)),
         'factura_total':len(contabilidadApi(anno,mes)[0]),

@@ -1,24 +1,28 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate,login,logout
 from . import metodos,metApis
 from .models import ReporteGeneral
 from django.utils import timezone
+from localStoragePy import localStoragePy
 
 # Create your views here.
 
 urlBase="reporteria/contenido/"
+localStorage = localStoragePy('reporteria', 'json')
 
 def valLogin(request):
-    if not request.user.is_authenticated:
+    if not localStorage.getItem('user'):
         if request.method != "POST":
             return render(request,urlBase+'login.html')
         else:
             usuario = request.POST["ususarioLog"]
             contrasena = request.POST["contrasenaLog"]
-            user=authenticate(username=usuario,password=contrasena)
-            if (user):
-                print('Usuario de reporteria encontrado ',user)
-                login(request,user)
+            user = {
+                'username':usuario,
+                'password':contrasena,
+            }
+            if (metApis.seguridadApi(usuario,contrasena)):
+                print('Usuario de reporteria encontrado ('+usuario+')')
+                localStorage.setItem('user',user)
                 return redirect(to='home')
             else:
                 print('Usuario no pertenece a reporteria')
@@ -30,7 +34,7 @@ def valLogin(request):
         return redirect(to='home')
     
 def logOutReport(request):
-    logout(request)
+    localStorage.removeItem('user')
     return redirect(to='home')
 
 def calcularPorc(a,b):
@@ -41,7 +45,7 @@ def calcularPorc(a,b):
     return porc
 
 def reporte(request):
-    if request.user.is_authenticated:
+    if localStorage.getItem('user'):
         reportes=[]
         for reporteTMP in ReporteGeneral.objects.all().order_by('-anno_mes_rt'):
             reporte={
@@ -61,7 +65,7 @@ def reporte(request):
         return redirect(to="login")
 
 def eliminarRt(request,pk):
-    if request.user.is_superuser:
+    if localStorage.getItem('user'):
         objReporte=ReporteGeneral.objects.get(anno_mes_rt=pk)
         objReporte.delete()
         return redirect('home')
@@ -69,7 +73,7 @@ def eliminarRt(request,pk):
         return redirect('login')
     
 def modificarRt(request,pk):
-    if request.user.is_superuser:
+    if localStorage.getItem('user'):
         anno=int(round(int(pk)/100,0))
         mesTmp=int(pk)-anno*100
         if mesTmp < 10:
@@ -93,7 +97,7 @@ def modificarRt(request,pk):
         return redirect('login')
 
 def dashboard(request):
-    if request.user.is_authenticated:
+    if localStorage.getItem('user'):
         fechaActual=timezone.now().date()
         finalAño=fechaActual.year*100+12
         try:
@@ -110,27 +114,28 @@ def dashboard(request):
         return redirect(to="login")
 
 def newReport(request):
-    if request.method =="POST":
-        anno_mes_rt_Post = request.POST["newRt"]
-        anno_mes_rt_Tmp = str(anno_mes_rt_Post).split('-')
-        anno_mes_rt = int(anno_mes_rt_Tmp[0]+anno_mes_rt_Tmp[1])
-        print(anno_mes_rt_Tmp[0])
-        print(anno_mes_rt_Tmp[1])
-        reporteApi=metApis.obtenerRG(anno_mes_rt_Tmp[0],anno_mes_rt_Tmp[1])
-        objReporte = ReporteGeneral.objects.create(anno_mes_rt=anno_mes_rt,
-                                                   entrega_total=reporteApi["entrega_total"],
-                                                   entrega_a_tiempo=reporteApi["entrega_a_tiempo"],
-                                                   stock_productos=reporteApi["stock_productos"],
-                                                   pedido_proveedor=reporteApi["pedido_proveedor"],
-                                                   adquisicion_recibida=reporteApi["adquisicion_recibida"],
-                                                   venta_pedido=reporteApi["venta_pedido"],
-                                                   venta_realizada=reporteApi["venta_realizada"],
-                                                   factura_total=reporteApi["factura_total"],
-                                                   factura_pagada=reporteApi["factura_pagada"])
-        objReporte.save()
-        return redirect(to="home")
-    else:
-        return redirect(to="home")
+    if localStorage.getItem('user'):
+        if request.method =="POST":
+            anno_mes_rt_Post = request.POST["newRt"]
+            anno_mes_rt_Tmp = str(anno_mes_rt_Post).split('-')
+            anno_mes_rt = int(anno_mes_rt_Tmp[0]+anno_mes_rt_Tmp[1])
+            print(anno_mes_rt_Tmp[0])
+            print(anno_mes_rt_Tmp[1])
+            reporteApi=metApis.obtenerRG(anno_mes_rt_Tmp[0],anno_mes_rt_Tmp[1])
+            objReporte = ReporteGeneral.objects.create(anno_mes_rt=anno_mes_rt,
+                                                    entrega_total=reporteApi["entrega_total"],
+                                                    entrega_a_tiempo=reporteApi["entrega_a_tiempo"],
+                                                    stock_productos=reporteApi["stock_productos"],
+                                                    pedido_proveedor=reporteApi["pedido_proveedor"],
+                                                    adquisicion_recibida=reporteApi["adquisicion_recibida"],
+                                                    venta_pedido=reporteApi["venta_pedido"],
+                                                    venta_realizada=reporteApi["venta_realizada"],
+                                                    factura_total=reporteApi["factura_total"],
+                                                    factura_pagada=reporteApi["factura_pagada"])
+            objReporte.save()
+            return redirect(to="home")
+        else:
+            return redirect(to="home")
     
 def newExcel(request,open,pk):
     id= int(pk)
