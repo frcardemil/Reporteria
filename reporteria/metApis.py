@@ -14,7 +14,7 @@ apisHosts = {
     'adquisiciones' : '34.199.103.123:8000',
     'proveedor' : '0.0.0.0:8000',
     'ventas' : 'https://leckiam.github.io/prueba-aws/ventas.json',
-    'despacho' : '44.205.221.190:8000',
+    'despacho' : '3.221.189.4:8000',
     'post_venta' : 'https://leckiam.github.io/prueba-aws/post_venta.json',
     'contabilidad' : '54.159.228.5:8000',
     'stock' : 'https://leckiam.github.io/prueba-aws/stock.json',
