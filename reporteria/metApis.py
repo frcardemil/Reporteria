@@ -19,10 +19,9 @@ apisHosts = {
     'contabilidad' : '54.159.228.5:8000',
     'stock' : 'https://leckiam.github.io/prueba-aws/stock.json',
     'reporteria' : '44.218.227.202:8000',
-    'seguridad' : '0.0.0.0:8000',
 }
 var_fecha_areas = {
-    'adquisiciones' : 'fecha_orden',
+    'adquisiciones' : 'fecha_adquisicion',
     'proveedor' : 'fecha_proveedor',
     'ventas' : 'fecha_venta',
     'despacho' : 'fecha_despacho',
@@ -40,7 +39,7 @@ def JSON_filtro(json,name,anno,mes):
     print(json)
     json_filtrado = [
         item for item in json 
-        if item[name_var_fecha][:4] == anno and 
+        if item[name_var_fecha][:4] == str(anno) and 
             item[name_var_fecha][5:7] == mes
     ]
     return json_filtrado
@@ -57,7 +56,7 @@ def reporteriaApi():
 def adquisicionesApi(anno,mes):
     '''
     try:
-        url = 'http://'+apisHosts['adquisiciones']+'/api/v1/productos/'
+        url = 'http://'+apisHosts['adquisiciones']+'/api/v1/carritos/'
         r = requests.get(url)
     except:
         #url = apisHosts['adquisiciones']
@@ -197,12 +196,18 @@ def stockApi(anno,mes):
 No poseo ruta exacta de seguridad
 
 def seguridadApi():
-    url = 'http://'+apisHosts['seguridad']+'/seguridad/'
+    username = admin.reporteria
+    password = reporteria
+    token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXBvcnRlcmlhIjoidG9rZW5fcmVwb3J0ZXJpYSJ9.jAdpn5jFFOSelg4OqppHtTaGq_NboZq0QsaSMTVEVTA
+    url = 'https://qic534o8o0.execute-api.us-east-1.amazonaws.com/validacionUsuarios/'+token
     r = requests.get(url)
-    try:
-        json_data = r.json().get("results", [])
-    except:
-        json_data = r.json()
+    if r.status_code == 200:
+        try:
+            json_data = r.json().get("results", [])
+        except:
+            json_data = r.json()
+    else:
+        print(f'Error en la petición GET: {r.status_code}')
     return json_data
 """
 
