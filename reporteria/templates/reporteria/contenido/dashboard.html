@@ -20,37 +20,44 @@
 <div class="container row" style="margin: 30px auto;">
     <h1 style="color: #EEEEEE;">Dashboard</h1>
     {% if reportes %}
-    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+    <div class="card cardChart" style="max-width: 30rem; padding: 10px 15px 10px 10px; margin: 12px auto;">
         <canvas id="myChart-0" width="400" height="400"></canvas>
         <div class="card-body">
             <h5 class="card-title">Entregas a tiempo</h5>
-            <p class="card-text">hola mundo</p>
+            <p class="card-text">KPI para hacer una an&aacute;lisis sobre los despachos que se han realizado a tiempo (dentro de los márgenes de tiempo).</p>
         </div>
     </div>
-    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+    <div class="card cardChart" style="max-width: 30rem; padding: 10px; margin: 12px auto;">
         <canvas id="myChart-1" width="400" height="400"></canvas>
         <div class="card-body">
-            <h5 class="card-title">Nuevo Stock</h5>
-            <p class="card-text">hola mundo</p>
+            <h5 class="card-title">Diferencia de stock</h5>
+            <p class="card-text">KPI para hacer una an&aacute;lisis sobre la diferencia de productos entre proveedores y stock.</p>
         </div>
     </div>
-    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+    <div class="card cardChart" style="max-width: 30rem; padding: 10px; margin: 12px auto;">
         <canvas id="myChart-2" width="400" height="400"></canvas>
         <div class="card-body">
             <h5 class="card-title">Ventas realizadas</h5>
-            <p class="card-text">hola mundo</p>
+            <p class="card-text">KPI para hacer una an&aacute;lisis sobre las ventas que se han realizado (ventas que no fueron canceladas).</p>
         </div>
     </div>
-    <div class="card cardChart" style="width: 18rem; padding: 10px; margin: 12px auto;">
+    <div class="card cardChart" style="max-width: 30rem; padding: 10px; margin: 12px auto;">
         <canvas id="myChart-3" width="400" height="400"></canvas>
         <div class="card-body">
-            <h5 class="card-title">Entregas a tiempo</h5>
-            <p class="card-text">hola mundo</p>
+            <h5 class="card-title">Finanzas pagadas</h5>
+            <p class="card-text">KPI para hacer una an&aacute;lisis sobre las finanzas que han sido pagadas a tiempo (antes de la fecha de vencimiento).</p>
+        </div>
+    </div>
+    <div class="card cardChart" style="max-width: 30rem; padding: 10px; margin: 12px auto;">
+        <canvas id="myChart-4" width="400" height="400"></canvas>
+        <div class="card-body">
+            <h5 class="card-title">Boletas pagadas</h5>
+            <p class="card-text">KPI para hacer una an&aacute;lisis sobre las boletas que han sido pagadas a tiempo (antes de la fecha de vencimiento).</p>
         </div>
     </div>
     <script src="{% static 'js/jsDashBoard.js'%}"></script>
     {% else %}
-    <p style="color: #EEEEEE;">No hay reportes.</p>
+    <p style="color: #EEEEEE;">No hay datos para realizar Dashboard.</p>
     {% endif %}
 </div>
 {% endblock %}

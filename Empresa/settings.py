@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import pymysql
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,7 @@ SECRET_KEY = 'django-insecure-&s$r0^!pht*nh8ylge%(vceccczl=t@(7%%zz_7j9-**!@s7$f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.224.245.239', '127.0.0.1']
+ALLOWED_HOSTS = ['34.224.245.239','44.218.227.202','127.0.0.1']
 
 
 # Application definition
@@ -77,28 +79,20 @@ WSGI_APPLICATION = 'Empresa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+
+
+DATABASES = {   
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.mtnpngqcnrrxldqndcbm',
-        'PASSWORD': 'Duocuc2024$',
-        'HOST': 'aws-0-us-west-1.pooler.supabase.com',
-        'PORT': '6543',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'REPORTERIA',
+        'USER': 'admin',    
+        'PASSWORD': 'reporte123',
+        'HOST': 'reportes-sql.c5cee6ukkzxz.us-east-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 #user=postgres.mtnpngqcnrrxldqndcbm password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
-import os
-from environs import Env
-from supabase import create_client, Client
 
-env = Env()
-env.read_env()
-
-supabase_url = env("SUPABASE_URL")
-supabase_key = env("SUPABASE_KEY")
-
-supabase: Client = create_client(supabase_url, supabase_key)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

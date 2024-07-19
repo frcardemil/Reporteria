@@ -37,6 +37,11 @@ body{
 .moveRight {
     position: absolute;
     right: 10px;
-    /* Ajusta la posición del icono a la derecha */
     cursor: pointer;
+}
+
+.centrar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
